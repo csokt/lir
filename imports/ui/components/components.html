@@ -1,0 +1,125 @@
+<!--############################################################################################################################  hello  ###-->
+<template name="hello">
+ <h2 class=kezdo>Termelés Információs Rendszer</h2>
+  {{#if logged}}
+    <p class=kezdo>Üdvözlöm {{user.name}}! Szerepköre: {{user.role}}</p>
+  {{/if}}
+    {{#if logged}}
+      <a href="/"><button id="logout" class=piros>Kijelentkezés</button></a>
+	  {{else}}
+	   <a href="/tablet"><button id="login" class=login>Bejelentkezés</button></a>
+	  {{/if}}
+<!--
+    <li class=kezdobal><a href="/scanner/server"><button class=szurke> Vonalkód olvasó szerver</button></a></li>
+    <li class=kezdobal> <a href="/scanner/client"><button class=szurke>Vonalkód olvasó kliens</button></a> </li>
+-->
+</template>
+
+<!--############################################################################################################################  logged  ###-->
+<template name="logged">
+  {{#if logged}}
+    {{> Template.contentBlock }}
+  {{else}}
+    {{> login}}
+  {{/if}}
+</template>
+
+<!--############################################################################################################################  login  ###-->
+<template name="login">
+ <p class=kamera>Jelentkezzen be a kódkártyájával!</p>
+  {{> qr defaultCameraIndex=0}}
+</template>
+
+<!--############################################################################################################################  dolgozo_scan  ###-->
+<template name="dolgozo_scan">
+  <p>Olvasd be a dolgozó kódját!</p>
+  {{> qr defaultCameraIndex=0}}
+</template>
+
+<!--############################################################################################################################  munkalap_scan  ###-->
+<template name="munkalap_scan">
+  <p>Olvasd le a munkalap kódját!</p>
+  {{> qr defaultCameraIndex=1}}
+</template>
+
+<!--############################################################################################################################  qr  ###-->
+<template name="qr">
+  {{#if nextcamera}}
+   <button class="nextkamera" type="button" id='nextcamera'>Váltás az előlapi és hátlapi kamera között</button>
+  {{/if}}
+  <video class="kamera" id="preview"></video>
+  {{> quickForm schema=Schema.qr doc=doc id="qrForm" template="bootstrap3-inline" type="normal" buttonContent="Ment"}}
+  {{scanmessage}}
+  <button onclick="window.history.go(-1)">Vissza</button>
+</template>
+
+<!--############################################################################################################################  view_list  ###-->
+<template name="view_list">
+       {{#if kodolhat}}
+      <a href="/kodol"><button class=alap>Teljesítmény kódolás</button></a>
+    {{/if}}
+    {{#each view in views}}
+        <a href={{path view}}><button class=zold>{{view.label}}</button></a>
+    {{/each}}
+</template>
+
+<!--############################################################################################################################  table  ###-->
+<template name="table">
+  {{#if isInfo}}
+    <span>Lekérdezés: {{view.label}}</span>
+    <span>Felhasználó: {{user.name}}</span>
+    <span>{{result.rowcount}} tétel</span>
+    <button id="isFilter">Szűrő</button>
+    <button onclick="window.history.go(-1)">Vissza</button>
+  {{/if}}
+
+  {{#if isFilter}}
+    {{> quickForm schema=schema doc=doc id="filterForm" type="normal" buttonContent="Ment"}}
+  {{/if}}
+
+  <div class="table-responsive {{view.device}}">
+  <table id="filtertable" class="table table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        {{#each field in view.fields}}
+          <th>{{field.label}}</th>
+        {{/each}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each row in result.stat}}
+        <tr class="stat">
+          {{#each field in row}}
+            <td>{{field}}</td>
+          {{/each}}
+        </tr>
+      {{/each}}
+      {{#each row in result.rows}}
+        <tr>
+          {{#each field in row}}
+            <td>{{field}}</td>
+          {{/each}}
+        </tr>
+
+        {{#if inserthead @index}}
+          <tr>
+            {{#each field in view.fields}}
+              <th>
+                {{#if field.label}}
+                  {{field.label}}
+                {{else}}
+                  {{field.name}}
+                {{/if}}
+              </th>
+            {{/each}}
+          </tr>
+        {{/if}}
+
+      {{/each}}
+    </tbody>
+  </table>
+  </div>
+  {{#if waitForResult}}
+    {{> spinner}}
+  {{/if}}
+</template>

@@ -1,0 +1,90 @@
+<!--############################################################################################################################  App_home  ###-->
+<template name="App_home">
+  {{> hello}}
+</template>
+
+<!--############################################################################################################################  App_scanner  ###-->
+<template name="App_scanner">
+  {{> quickForm schema=Schema.scanner doc=doc id="scannerForm" type="normal" buttonContent="Ment" template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+</template>
+
+<!--############################################################################################################################  App_kodol  ###-->
+<template name="App_kodol">
+  {{# logged}}
+    {{#if dolgozo}}
+      {{#if munkalap}}
+        {{> quickForm schema=Schema.kodol doc=doc id="kodolForm" type="normal" buttonContent="Ment" template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+
+        <button type="button" id='ujMunkalap'>Új munkalap</button>
+        {{#if kodolo}}
+          <button type="button" id='ujDolgozo'>Új dolgozó</button>
+        {{/if}}
+        <button onclick="window.history.go(-1)">Vissza</button>
+
+        <div class="table-responsive">
+        <table id="kodolasoktable" class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Műveletkód</th>
+              <th>Mennyiség</th>
+              <th>Eredmény</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each ujKodolasok}}
+              <tr>
+                <td>{{muveletkod}}</td>
+                <td>{{mennyiseg}}</td>
+                <td>{{eredmeny}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        </div>
+      {{else}}
+        {{> munkalap_scan}}
+      {{/if}}
+    {{else}}
+      {{> dolgozo_scan}}
+    {{/if}}
+  {{/ logged}}
+</template>
+
+<!--############################################################################################################################  App_notFound  ###-->
+<template name="App_notFound">
+  <div id="not-found">
+    <div class="not-found-image">
+      <img src="/img/404.svg" alt="" />
+    </div>
+    <div class="not-found-title">
+      <h1>Sajnálom, ez az oldal nem létezik.</h1>
+      <a href="/" class="gotohomepage">Kezdőoldalra</a>
+    </div>
+  </div>
+</template>
+
+<!--############################################################################################################################  App_tablet  ###-->
+<template name="App_tablet">
+  {{> hello}}
+  {{# logged}}
+    {{> view_list device="tablet"}}
+  {{/ logged}}
+</template>
+
+<!--############################################################################################################################  App_tablet_view  ###-->
+<template name="App_tablet_view">
+  {{# logged}}
+    {{> table}}
+  {{/ logged}}
+</template>
+
+<!--############################################################################################################################  App_tv  ###-->
+<template name="App_tv">
+  {{> hello}}
+  {{> view_list device="tv"}}
+</template>
+
+<!--############################################################################################################################  App_tv_view  ###-->
+<template name="App_tv_view">
+  {{> table}}
+</template>

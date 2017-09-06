@@ -1,0 +1,17 @@
+{
+  "name": "tir",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "bunyan": "^1.8.10",
+    "instascan": "^1.0.0",
+    "js-yaml": "^3.8.4",
+    "knex": "^0.13.0",
+    "meteor-node-stubs": "~0.2.4",
+    "mqtt": "^2.9.1",
+    "mssql": "^3.3.0"
+  }
+}
