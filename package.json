@@ -1,5 +1,5 @@
 {
-  "name": "tir",
+  "name": "lir",
   "private": true,
   "scripts": {
     "start": "meteor run"
@@ -12,6 +12,7 @@
     "knex": "^0.13.0",
     "meteor-node-stubs": "~0.2.4",
     "mqtt": "^2.9.1",
-    "mssql": "^3.3.0"
+    "mssql": "^3.3.0",
+    "pg": "^7.3.0"
   }
 }

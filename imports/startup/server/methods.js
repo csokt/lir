@@ -1,10 +1,10 @@
 // Methods
 
 import { Meteor } from 'meteor/meteor'
-import { mssql } from '../../startup/server/initdb.js'
+import { pg } from '../../startup/server/initdb.js'
 import mqtt from 'mqtt'
 
-const TopicBase = 'tir/dama/kodol/'
+const TopicBase = 'lir/legrand/kodol/'
 const client = mqtt.connect('mqtt://192.168.0.30', {username:'admin', password:'Szefo1953'})
 client.subscribe(TopicBase+'response')
 //client.subscribe('#')
@@ -39,7 +39,7 @@ Meteor.methods({
 
     const view = _.findWhere(Config.views, {id: param.viewId})
     const fields = _.pluck(view.fields, 'name')
-    let q = mssql.select(fields).from(view.name)
+    let q = pg.select(fields).from(view.name)
     if (view.order) { q = q.orderByRaw(view.order) }
     if (view.limit) { q = q.limit(view.limit) }
     if (view.where) { q = q.whereRaw(view.where) }
@@ -79,16 +79,15 @@ Meteor.methods({
     })
   },
 
-  getVarro(belepokod) {
-    dolgozokod = belepokod-20000
-    let q = mssql.select('dolgozokod', 'dolgozonev').from('dolgtr').where('dolgozokod', dolgozokod).where('aktiv', 'A')
+  getUser(qr) {
+    let q = pg.select().from('legrand_lir_user').where('qr', qr).limit(1)
     log.debug(q.toString())
     return q.then(data => {
       if (!data.length) {
-        log.warn(dolgozokod, 'dolgozokod not found int table dolgtr')
+        log.warn(qr, 'qr not found int table lir_user')
         return undefined
       }
-      const user = {name: data[0].dolgozonev.trim(), role: 'varró', belepokod: belepokod}
+      const user = data[0]
       return user
     }).catch(error => {
       log.error(error)
@@ -96,17 +95,16 @@ Meteor.methods({
     })
   },
 
-  getKodolo(belepokod) {
-    userid = belepokod-50000
-    let q = mssql.select('userid', 'fullname').from('users').where('userid', userid)
+  getDolgozo(qr) {
+    let q = pg.select().from('nexon_szemely').where({SzemelyId: qr, active: true}).limit(1)
     log.debug(q.toString())
     return q.then(data => {
       if (!data.length) {
-        log.warn(userid, 'userid not found int table users')
+        log.warn(qr, 'qr not found int table nexon_szemely')
         return undefined
       }
-      const user = {name: data[0].fullname.trim(), role: 'kódoló', belepokod: belepokod}
-      return user
+      const dolgozo = data[0]
+      return dolgozo
     }).catch(error => {
       log.error(error)
       throw new Meteor.Error('query error', q.toString(), error)

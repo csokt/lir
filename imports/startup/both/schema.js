@@ -39,21 +39,9 @@ Schema.scanner = new SimpleSchema({
 })
 
 Schema.kodol = new SimpleSchema({
-  username: {
+  hely: {
     type:  String,
-    label: "Felhasználó",
-    optional: true,
-    autoform : {disabled: true}
-  },
-  telephely: {
-    type:  String,
-    label: "Telephely",
-    optional: true,
-    autoform : {disabled: true}
-  },
-  kodolo: {
-    type:  String,
-    label: "Kódoló",
+    label: "Gyártási hely",
     optional: true,
     autoform : {disabled: true}
   },
@@ -63,15 +51,31 @@ Schema.kodol = new SimpleSchema({
     optional: true,
     autoform : {disabled: true}
   },
-  munkalap: {
+  gyartasi_lap_id: {
     type:  Number,
-    label: "Munkalap",
+    label: "Gyártási lap",
+  },
+  szefo_muvelet_id: {
+    type:  Number,
+    label: "Műveletkód",
+  },
+  szefo_muvelet: {
+    type:  String,
+    label: "Művelet",
     optional: true,
     autoform : {disabled: true}
   },
-  muveletkod: {
+  osszes_db: {
     type:  Number,
-    label: "Műveletkód",
+    label: "Összes db",
+    optional: true,
+    autoform : {disabled: true}
+  },
+  kesz_db: {
+    type:  Number,
+    label: "Kész db",
+    optional: true,
+    autoform : {disabled: true}
   },
   mennyiseg: {
     type:  Number,

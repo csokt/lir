@@ -11,7 +11,7 @@ Template.registerHelper('user', function(){
 
 Template.registerHelper('kodolhat', function(){
   user = Session.get('user')
-  return user && _.contains(['varró', 'kódoló'], user.role)
+  return user && _.contains(['kodolo'], user.role)
 //  return user && _.contains(['varró'], user.role)
 })
 
@@ -26,8 +26,7 @@ Template.registerHelper('kodolo', function(){
 })
 
 Template.registerHelper('dolgozo', function(){
-  user = Session.get('user')
-  return user && user.role != 'kódoló' || Session.get('dolgozokod')
+  return Session.get('dolgozo')
 })
 
 Template.registerHelper('wait', function(){

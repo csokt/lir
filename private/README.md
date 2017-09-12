@@ -9,7 +9,7 @@ All files inside a top-level directory called `private/` are only accessible fro
 user          GD.user-rel azonos
 scanresult    A kódolvasó vagy kézi adatbevitel eredménye
 scanmessage   A kódolvasó template-ben megjelenített válasz
-dolgozokod    Bekerül a GD.kodol-ba
+dolgozo       GD.dolgozo-val azonos
 munkalap      Bekerül a GD.kodol-ba
 
 

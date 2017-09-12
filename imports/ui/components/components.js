@@ -27,33 +27,23 @@ Template.login.onCreated(function () {
         return
       }
       GD.user = user
-      if (user.role == 'varró') {
+      Session.set('user', user)
+      log('info', {}, 'login')
+
+      if (user.role == 'kodolo') {
         GD.kodol = {
-          telephelykod: 0,
-          telephely:    'Szeged, Tavasz u. 2.',
-          kodolokod:    -1,
-          kodolo:       'dolgozó',
-          dolgozokod:   user.belepokod,
-          dolgozo:      user.name,
-          belepokod:    user.belepokod,
-          username:     user.name,
-          role:         user.role,
-        }
-      } else if (user.role == 'kódoló') {
-        GD.kodol = {
-          telephelykod: 0,
-          telephely:    'Szeged, Tavasz u. 2.',
-          kodolokod:    user.belepokod,
-          kodolo:       user.name,
-          belepokod:    user.belepokod,
-          username:     user.name,
-          role:         user.role,
+          szefo_muvelet_id:  undefined,
+          hely_id         :  user.hely_id,
+          hely            :  user.hely,
+          szemely_id      :  undefined,
+          mennyiseg       :  undefined,
+          megjegyzes      :  'lir',
+          nexon_azon      :  undefined,
+
         }
       } else {
         GD.kodol = undefined
       }
-      Session.set('user', user)
-      log('info', {}, 'login')
     }
 
     const scanresult = Session.get('scanresult')
@@ -65,20 +55,11 @@ Template.login.onCreated(function () {
     }
 
     if (!Session.get('user')) {
-      if (qr<20000) {
-        let user = _.find(Config.users, function(u) { return u.qr == qr} )
-        setUser(user)
-      } else if (qr<50000) {
-        Meteor.call('getVarro', qr, function(err, res){
-          if (err) {console.log(err); return }
-          setUser(res)
-        })
-      } else {
-        Meteor.call('getKodolo', qr, function(err, res){
-          if (err) {console.log(err); return }
-          setUser(res)
-        })
-      }
+      Meteor.call('getUser', qr, function(err, res){
+        if (err) {console.log(err); return }
+        setUser(res)
+      })
+
     }
   })
 })
@@ -87,30 +68,19 @@ Template.login.onCreated(function () {
 Template.dolgozo_scan.onCreated(function () {
   this.autorun(function() {
     const scanresult = Session.get('scanresult')
+    if (!scanresult) {return}
     const qr = parseInt(scanresult)
-    if (qr >= 20000 && qr < 50000 ) {
-      Meteor.call('getVarro', qr, function(err, res){
-        if (err) {console.log(err); return }
-        if (res) {
-          GD.kodol.dolgozokod = res.belepokod
-          GD.kodol.dolgozo    = res.name
-          Session.set('dolgozokod', res.belepokod)
-        } else {
-          Session.set('scanmessage', 'Érvénytelen dolgozó kód!')
-        }
-      })
-    } else {
-      Session.set('scanmessage', 'Érvénytelen dolgozó kód!')
-    }
-  })
-})
-
-//############################################################################################################################  munkalap_scan  ###
-Template.munkalap_scan.onCreated(function () {
-  this.autorun(function() {
-    let scanresult = Session.get('scanresult')
-    GD.kodol.munkalap = scanresult
-    Session.set('munkalap', scanresult)
+    Meteor.call('getDolgozo', qr, function(err, res){
+      if (err) {console.log(err); return }
+      if (res) {
+        Session.set('dolgozo', res)
+        GD.kodol.szemely_id = res.id
+        GD.kodol.nexon_azon = res.SzemelyId
+        GD.kodol.dolgozo    = res.name
+      } else {
+        Session.set('scanmessage', 'Érvénytelen dolgozó kód!')
+      }
+    })
   })
 })
 

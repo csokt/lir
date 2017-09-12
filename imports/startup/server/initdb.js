@@ -1,11 +1,11 @@
 import knex from 'knex'
 
-export const mssql = knex({
-  client: 'mssql',
+export const pg = knex({
+  client: 'pg',
   connection: {
-    host : '192.168.0.2\\PROLIANTML350',
-    user : 'informix',
-    password : 'informix',
-    database : 'SzefoModulKeszlet'
+    host : 'localhost',
+    user : 'tibor',
+    password : 'tiborc',
+    database : 'raktar'
   }
 })

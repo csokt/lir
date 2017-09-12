@@ -1,7 +1,5 @@
 import bunyan from 'bunyan'
 
-//log = bunyan.createLogger({name: 'TIR'})
-
 log = bunyan.createLogger({
     name: 'LIR',
 //    level: 'info',

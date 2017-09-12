@@ -1,14 +1,12 @@
 <!--############################################################################################################################  hello  ###-->
 <template name="hello">
- <h2 class=kezdo>Termelés Információs Rendszer</h2>
+ <h2 class=kezdo>Legrand Információs Rendszer</h2>
   {{#if logged}}
-    <p class=kezdo>Üdvözlöm {{user.name}}! Szerepköre: {{user.role}}</p>
+    <p class=kezdo>Üdvözlöm {{user.name}}!</p>
+    <a href="/"><button id="logout" class=piros>Kijelentkezés</button></a>
+  {{else}}
+   <a href="/tablet"><button id="login" class=login>Bejelentkezés</button></a>
   {{/if}}
-    {{#if logged}}
-      <a href="/"><button id="logout" class=piros>Kijelentkezés</button></a>
-	  {{else}}
-	   <a href="/tablet"><button id="login" class=login>Bejelentkezés</button></a>
-	  {{/if}}
 <!--
     <li class=kezdobal><a href="/scanner/server"><button class=szurke> Vonalkód olvasó szerver</button></a></li>
     <li class=kezdobal> <a href="/scanner/client"><button class=szurke>Vonalkód olvasó kliens</button></a> </li>
@@ -36,12 +34,6 @@
   {{> qr defaultCameraIndex=0}}
 </template>
 
-<!--############################################################################################################################  munkalap_scan  ###-->
-<template name="munkalap_scan">
-  <p>Olvasd le a munkalap kódját!</p>
-  {{> qr defaultCameraIndex=1}}
-</template>
-
 <!--############################################################################################################################  qr  ###-->
 <template name="qr">
   {{#if nextcamera}}
@@ -55,12 +47,12 @@
 
 <!--############################################################################################################################  view_list  ###-->
 <template name="view_list">
-       {{#if kodolhat}}
-      <a href="/kodol"><button class=alap>Teljesítmény kódolás</button></a>
-    {{/if}}
-    {{#each view in views}}
-        <a href={{path view}}><button class=zold>{{view.label}}</button></a>
-    {{/each}}
+  {{#if kodolhat}}
+    <a href="/kodol"><button class=alap>Teljesítmény kódolás</button></a>
+  {{/if}}
+  {{#each view in views}}
+    <a href={{path view}}><button class=zold>{{view.label}}</button></a>
+  {{/each}}
 </template>
 
 <!--############################################################################################################################  table  ###-->
